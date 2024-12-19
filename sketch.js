@@ -9,30 +9,32 @@ function preload() {
 }
 
 function setup() { 
-  createCanvas(1000, 1000);
+  createCanvas(windowWidth, windowHeight);
 
   // 검정 레이어 생성
   maskGraphics = createGraphics(windowWidth, windowHeight);
   maskGraphics.fill(0); // 검정색으로 채우기
   maskGraphics.rect(0, 0, windowWidth, windowHeight);
 
-  // 버튼 생성
-  button = createButton('Change Image');
-  button.position(20, 20);
+  // 이미지 버튼 생성
+  button = createImg('swuz.svg', 'Clickable Image');
+  button.position(20, 20); // 버튼 위치 설정
   button.mousePressed(changeImage); // 버튼 클릭 시 `changeImage` 함수 호출
+  button.style('cursor', 'pointer'); // 마우스 오버 시 손 모양으로 변경
+  button.size(60, 60); // 버튼 크기를 줄임
 }
 
 function draw() {
   // 배경에 이미지 그리기
-  image(img, 0, 0, 1000, 1000);
-  
+  image(img, 0, 0, width, height);
 
   // 검정 레이어 덮기
   image(maskGraphics, 0, 0);
 
-  // 텍스트 추가 (상단 중앙에 흰 글씨로 표시)
+  // 반응형 텍스트 크기 설정
+  let responsiveTextSize = width / 30; // 화면 너비에 비례한 텍스트 크기
   fill(255); // 텍스트 색을 흰색으로 설정
-  textSize(32);
+  textSize(responsiveTextSize);
   textAlign(CENTER, TOP); // 상단 중앙 정렬
   text(currentText, width / 2, 20); // 상단 중앙에 텍스트 표시
 }
@@ -52,13 +54,14 @@ function changeImage() {
   currentText = "산타 공장에 있는 슈니즈를 찾아보세요!";
 
   // 검정 레이어 리셋
-  maskGraphics.fill(0); // 다시 검정색으로 채우기
+  maskGraphics.clear(); // 이전 내용을 지움
+  maskGraphics.fill(0); // 검정색으로 다시 채우기
   maskGraphics.rect(0, 0, windowWidth, windowHeight); // 캔버스를 다시 채워서 리셋
 }
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
-  maskGraphics.resizeCanvas(windowWidth, windowHeight);
+  maskGraphics = createGraphics(windowWidth, windowHeight); // 새 크기로 다시 생성
   maskGraphics.fill(0);
   maskGraphics.rect(0, 0, windowWidth, windowHeight); // 리셋된 레이어 채우기
 }
